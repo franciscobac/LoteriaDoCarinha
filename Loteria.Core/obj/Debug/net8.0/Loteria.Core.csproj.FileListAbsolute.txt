@@ -1,0 +1,14 @@
+/home/carinha/Projects/LoteriaApp/Loteria.Core/bin/Debug/net8.0/Loteria.Core.deps.json
+/home/carinha/Projects/LoteriaApp/Loteria.Core/bin/Debug/net8.0/Loteria.Core.runtimeconfig.json
+/home/carinha/Projects/LoteriaApp/Loteria.Core/bin/Debug/net8.0/Loteria.Core.dll
+/home/carinha/Projects/LoteriaApp/Loteria.Core/bin/Debug/net8.0/Loteria.Core.pdb
+/home/carinha/Projects/LoteriaApp/Loteria.Core/obj/Debug/net8.0/Loteria.Core.csproj.AssemblyReference.cache
+/home/carinha/Projects/LoteriaApp/Loteria.Core/obj/Debug/net8.0/Loteria.Core.GeneratedMSBuildEditorConfig.editorconfig
+/home/carinha/Projects/LoteriaApp/Loteria.Core/obj/Debug/net8.0/Loteria.Core.AssemblyInfoInputs.cache
+/home/carinha/Projects/LoteriaApp/Loteria.Core/obj/Debug/net8.0/Loteria.Core.AssemblyInfo.cs
+/home/carinha/Projects/LoteriaApp/Loteria.Core/obj/Debug/net8.0/Loteria.Core.csproj.CoreCompileInputs.cache
+/home/carinha/Projects/LoteriaApp/Loteria.Core/obj/Debug/net8.0/Loteria.Core.dll
+/home/carinha/Projects/LoteriaApp/Loteria.Core/obj/Debug/net8.0/refint/Loteria.Core.dll
+/home/carinha/Projects/LoteriaApp/Loteria.Core/obj/Debug/net8.0/Loteria.Core.pdb
+/home/carinha/Projects/LoteriaApp/Loteria.Core/obj/Debug/net8.0/Loteria.Core.genruntimeconfig.cache
+/home/carinha/Projects/LoteriaApp/Loteria.Core/obj/Debug/net8.0/ref/Loteria.Core.dll
