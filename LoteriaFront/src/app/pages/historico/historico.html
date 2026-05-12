@@ -1,0 +1,47 @@
+<div class="card">
+  <div class="card-header bg-secondary text-white">
+    <h4 class="mb-0">Meu Histórico</h4>
+  </div>
+  <div class="card-body">
+    <!-- Exibir loading -->
+    <div *ngIf="carregando" class="text-center">
+      <div class="spinner-border text-secondary" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+      <p class="mt-2">Carregando histórico...</p>
+    </div>
+
+    <!-- Exibir erro -->
+    <div *ngIf="erro && !carregando" class="alert alert-danger">
+      {{ erro }}
+    </div>
+
+    <!-- Exibir lista vazia -->
+    <div *ngIf="!carregando && !erro && historico.length === 0" class="alert alert-info">
+      Nenhum número gerado ainda. Vá em "Gerar Números" para começar!
+    </div>
+
+    <!-- Exibir histórico -->
+    <div *ngFor="let item of historico" class="card mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h5 class="text-primary">{{ item.loteriaNome }}</h5>
+            <p class="text-muted mb-1">
+              📅 Gerado em: {{ item.dataGeracao | date:'dd/MM/yyyy' }} às {{ item.horaGeracao }}
+            </p>
+            <p *ngIf="item.observacao" class="small text-info">📝 {{ item.observacao }}</p>
+          </div>
+          <button class="btn btn-danger btn-sm" (click)="deletar(item.id)">🗑️ Excluir</button>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <div *ngFor="let num of item.numeros" 
+               class="bg-info text-white p-2 rounded-circle d-inline-flex align-items-center justify-content-center fw-bold"
+               style="width: 45px; height: 45px;">
+            {{ num | number:'2.0' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
