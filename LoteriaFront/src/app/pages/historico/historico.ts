@@ -1,17 +1,22 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { NumerosService } from '../../services/numeros.service';
+import { LOTERIAS_UI, obterLoteriaPorNome } from '../../data/loterias.data';
 
 @Component({
   selector: 'app-historico',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './historico.html',
   styleUrls: ['./historico.css']
 })
 export class Historico implements OnInit {
   historico: any[] = [];
+  busca = '';
+  loteriaFiltro = 'todas';
+  loterias = LOTERIAS_UI;
   carregando = false;
   erro: string | null = null;
 
@@ -21,8 +26,27 @@ export class Historico implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
+  get historicoFiltrado(): any[] {
+    return this.historico.filter((item) => {
+      const loteriaValida = this.loteriaFiltro === 'todas' || item.loteriaNome === this.loteriaFiltro;
+      const buscaNormalizada = this.busca.trim().toLowerCase();
+
+      if (!buscaNormalizada) {
+        return loteriaValida;
+      }
+
+      const numerosTexto = Array.isArray(item.numeros) ? item.numeros.join(' ') : '';
+      const texto = `${item.loteriaNome} ${item.observacao ?? ''} ${numerosTexto}`.toLowerCase();
+      return loteriaValida && texto.includes(buscaNormalizada);
+    });
+  }
+
   ngOnInit() {
     this.carregarHistorico();
+  }
+
+  getLoteriaInfo(nome: string) {
+    return obterLoteriaPorNome(nome);
   }
 
   carregarHistorico() {
@@ -37,7 +61,6 @@ export class Historico implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error(err);
         if (err.status === 401) {
           this.erro = 'Sua sessão expirou. Faça login novamente.';
           this.router.navigate(['/login']);
@@ -57,7 +80,6 @@ export class Historico implements OnInit {
           this.carregarHistorico();
         },
         error: (err) => {
-          console.error(err);
           alert(err.error?.mensagem || 'Erro ao excluir');
         }
       });

@@ -1,0 +1,6 @@
+.history-item {
+	--lottery-color: #14b8a6;
+	border-radius: 0.95rem;
+	border: 1px solid color-mix(in srgb, var(--lottery-color) 35%, white);
+	background: color-mix(in srgb, var(--lottery-color) 8%, white);
+}

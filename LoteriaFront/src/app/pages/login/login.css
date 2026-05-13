@@ -1,0 +1,16 @@
+.login-highlight {
+	background:
+		radial-gradient(circle at 80% 10%, rgba(45, 212, 191, 0.18), transparent 30%),
+		radial-gradient(circle at 10% 80%, rgba(37, 99, 235, 0.14), transparent 36%),
+		rgba(255, 255, 255, 0.88);
+}
+
+.feature-list {
+	padding-left: 1rem;
+	color: #334155;
+	line-height: 1.9;
+}
+
+.confirm-box {
+	border-top: 1px solid #e2e8f0;
+}

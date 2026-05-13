@@ -1,0 +1,38 @@
+.lottery-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+	gap: 0.7rem;
+}
+
+.lottery-card {
+	--lottery-color: #0ea5a4;
+	text-align: left;
+	border-radius: 0.85rem;
+	border: 1px solid #e2e8f0;
+	background: #fff;
+	padding: 0.8rem 0.85rem;
+	display: grid;
+	gap: 0.2rem;
+	transition: all 0.2s ease;
+}
+
+.lottery-card .symbol {
+	font-size: 1.25rem;
+}
+
+.lottery-card small {
+	color: #64748b;
+}
+
+.lottery-card.selected {
+	border-color: color-mix(in srgb, var(--lottery-color) 60%, white);
+	background: color-mix(in srgb, var(--lottery-color) 10%, white);
+	box-shadow: 0 10px 20px color-mix(in srgb, var(--lottery-color) 22%, transparent);
+}
+
+.generated-box {
+	--lottery-color: #0ea5a4;
+	border-radius: 1rem;
+	border: 1px solid color-mix(in srgb, var(--lottery-color) 34%, white);
+	background: color-mix(in srgb, var(--lottery-color) 8%, white);
+}

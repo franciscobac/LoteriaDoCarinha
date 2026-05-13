@@ -8,8 +8,10 @@ import { HeaderComponent } from './components/header/header.component';
   imports: [RouterOutlet, HeaderComponent],
   template: `
     <app-header />
-    <main class="container mt-4">
-      <router-outlet />
+    <main class="app-main">
+      <div class="container-lg py-4 py-md-5">
+        <router-outlet />
+      </div>
     </main>
   `
 })

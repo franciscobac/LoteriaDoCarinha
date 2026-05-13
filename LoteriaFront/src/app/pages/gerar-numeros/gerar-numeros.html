@@ -1,61 +1,63 @@
-<div class="card">
-  <div class="card-header bg-primary text-white">
-    <h4 class="mb-0">Gerar Números para Aposta</h4>
+<section class="app-surface p-4 p-md-5">
+  <p class="badge-soft">✨ Gerador inteligente</p>
+  <h1 class="app-section-title mt-2">Monte seus jogos com estilo</h1>
+  <p class="app-section-subtitle mb-4">Escolha a loteria, personalize com observação e salve no histórico automaticamente.</p>
+
+  <div class="lottery-grid mb-4">
+    <button
+      type="button"
+      class="lottery-card"
+      *ngFor="let item of loterias"
+      [class.selected]="item.id === tipoLoteriaId"
+      [style.--lottery-color]="item.cor"
+      (click)="tipoLoteriaId = item.id"
+    >
+      <span class="symbol">{{ item.simbolo }}</span>
+      <strong>{{ item.nomeExibicao }}</strong>
+      <small>{{ item.faixa }}</small>
+    </button>
   </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-6">
-        <label class="form-label">Loteria</label>
-        <select class="form-select" [(ngModel)]="tipoLoteriaId" name="tipoLoteriaId">
-          <option [value]="1">Mega-Sena (6 números - 1 a 60)</option>
-          <option [value]="2">Lotofácil (15 números - 1 a 25)</option>
-        </select>
-      </div>
-      <div class="col-md-6">
-        <label class="form-label">Observação (opcional)</label>
-        <input type="text" class="form-control" [(ngModel)]="observacao" name="observacao" placeholder="Ex: Aposta para concurso 3000">
-      </div>
+
+  <div class="row g-3 align-items-end">
+    <div class="col-md-8">
+      <label class="form-label">Observação (opcional)</label>
+      <input type="text" class="form-control" [(ngModel)]="observacao" name="observacao" placeholder="Ex: Jogo da semana">
     </div>
-    <div class="mt-3">
-      <button class="btn btn-primary" (click)="gerar()" [disabled]="carregando">
-        {{ carregando ? 'Gerando...' : 'Gerar Números' }}
+    <div class="col-md-4 d-grid">
+      <button class="btn btn-gradient py-2" (click)="gerar()" [disabled]="carregando">
+        {{ carregando ? 'Gerando...' : 'Gerar números' }}
       </button>
     </div>
+  </div>
 
-    <!-- Exibir loading -->
-    <div *ngIf="carregando" class="text-center mt-4">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Gerando...</span>
+  <div *ngIf="carregando" class="text-center mt-4 py-3">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Gerando...</span>
+    </div>
+    <p class="mt-3 mb-0 text-secondary">Criando jogo para {{ loteriaSelecionada.nomeExibicao }}...</p>
+  </div>
+
+  <div *ngIf="erro && !carregando" class="alert alert-danger mt-4 mb-0">{{ erro }}</div>
+
+  <div *ngIf="numerosGerados && !carregando && !erro" class="generated-box mt-4 p-4" [style.--lottery-color]="loteriaSelecionada.cor">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+      <div>
+        <h5 class="mb-1">{{ loteriaSelecionada.simbolo }} {{ loteriaSelecionada.nomeExibicao }}</h5>
+        <p class="text-secondary mb-0">{{ loteriaSelecionada.faixa }}</p>
       </div>
-      <p class="mt-2">Gerando números aleatórios...</p>
+      <span class="badge text-bg-light border">Jogo #{{ numerosGerados.id }}</span>
     </div>
 
-    <!-- Exibir erro -->
-    <div *ngIf="erro && !carregando" class="alert alert-danger mt-4">
-      {{ erro }}
+    <div class="d-flex flex-wrap gap-2 mb-3">
+      <span *ngFor="let num of numerosGerados.numeros" class="number-ball">{{ num | number:'2.0' }}</span>
     </div>
 
-    <!-- Exibir números gerados -->
-    <div *ngIf="numerosGerados && !carregando && !erro" class="mt-4">
-      <hr>
-      <h5 class="text-success">✅ Números Gerados com Sucesso!</h5>
-      <p class="text-muted">Loteria: {{ tipoLoteriaId === 1 ? 'Mega-Sena' : 'Lotofácil' }}</p>
-      
-      <div class="d-flex flex-wrap gap-2 mb-3">
-        <div *ngFor="let num of numerosGerados" 
-             class="bg-success text-white p-3 rounded-circle d-inline-flex align-items-center justify-content-center fw-bold fs-5"
-             style="width: 55px; height: 55px;">
-          {{ num | number:'2.0' }}
-        </div>
-      </div>
-      
-      <div *ngIf="observacao" class="alert alert-info mt-2">
-        <strong>Observação:</strong> {{ observacao }}
-      </div>
-      
-      <div class="alert alert-success mt-2">
-        📝 Estes números foram salvos no seu histórico!
-      </div>
+    <div class="small text-secondary">
+      <strong>Gerado em:</strong> {{ numerosGerados.dataGeracao | date:'dd/MM/yyyy' }} às {{ numerosGerados.horaGeracao }}
+    </div>
+
+    <div *ngIf="numerosGerados.observacao" class="alert alert-info mt-3 mb-0">
+      <strong>Observação:</strong> {{ numerosGerados.observacao }}
     </div>
   </div>
-</div>
+</section>

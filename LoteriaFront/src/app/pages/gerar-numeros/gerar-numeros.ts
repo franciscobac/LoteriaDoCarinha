@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NumerosService } from '../../services/numeros.service';
+import { LOTERIAS_UI, obterLoteriaPorId } from '../../data/loterias.data';
+import { NumerosGeradosResponse } from '../../interfaces/numeros-gerados.interface';
 
 @Component({
   selector: 'app-gerar-numeros',
@@ -14,9 +16,10 @@ import { NumerosService } from '../../services/numeros.service';
 export class GerarNumeros {
   tipoLoteriaId = 1;
   observacao = '';
-  numerosGerados: number[] | null = null;
+  numerosGerados: NumerosGeradosResponse | null = null;
   carregando = false;
   erro: string | null = null;
+  loterias = LOTERIAS_UI;
 
   constructor(
     private numerosService: NumerosService,
@@ -24,15 +27,17 @@ export class GerarNumeros {
     private cdr: ChangeDetectorRef
   ) {}
 
+  get loteriaSelecionada() {
+    return obterLoteriaPorId(this.tipoLoteriaId);
+  }
+
   gerar() {
-    // Resetar estados
     this.carregando = true;
     this.numerosGerados = null;
     this.erro = null;
-    
-    // Forçar atualização da UI
+
     this.cdr.detectChanges();
-    
+
     const dados = {
       tipoLoteriaId: this.tipoLoteriaId,
       observacao: this.observacao
@@ -40,7 +45,7 @@ export class GerarNumeros {
     
     this.numerosService.gerarNumeros(dados).subscribe({
       next: (res: any) => {
-        this.numerosGerados = res.numeros;
+        this.numerosGerados = res as NumerosGeradosResponse;
         this.carregando = false;
         this.cdr.detectChanges();
       },

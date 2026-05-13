@@ -1,0 +1,32 @@
+.selected-lottery {
+	--lottery-color: #14b8a6;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.7rem 0.95rem;
+	border-radius: 0.9rem;
+	background: color-mix(in srgb, var(--lottery-color) 12%, white);
+	border: 1px solid color-mix(in srgb, var(--lottery-color) 40%, white);
+}
+
+.selected-lottery span {
+	font-size: 1.35rem;
+}
+
+.selected-lottery small {
+	display: block;
+	color: #475569;
+}
+
+.resultado-box {
+	border-radius: 1rem;
+	border: 1px solid #e2e8f0;
+	background: #f8fafc;
+}
+
+thead th {
+	color: #0f172a;
+	font-size: 0.86rem;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+}

@@ -1,7 +1,9 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { ConcursoService } from '../../services/concurso.service';
+import { LOTERIAS_UI, obterLoteriaPorSlug } from '../../data/loterias.data';
+import { ConcursoResponse, UltimoConcursoResponse } from '../../interfaces/concurso.interface';
 
 @Component({
   selector: 'app-consultar',
@@ -14,43 +16,87 @@ export class ConsultarConcurso {
   loteria = 'megasena';
   concursoNumero?: number;
   carregando = false;
-  resultado: any = null;
+  resultado: ConcursoResponse | null = null;
   erro: string | null = null;
+  loterias = LOTERIAS_UI;
 
   constructor(
-    private http: HttpClient,
+    private concursoService: ConcursoService,
     private cdr: ChangeDetectorRef
   ) {}
 
+  get loteriaSelecionada() {
+    return obterLoteriaPorSlug(this.loteria);
+  }
+
   buscar() {
     if (!this.concursoNumero) {
-      alert('Digite o número do concurso');
+      this.erro = 'Digite o número do concurso para pesquisar.';
       return;
     }
 
-    // Resetar estados
     this.carregando = true;
     this.resultado = null;
     this.erro = null;
-    
-    // Forçar atualização da UI
     this.cdr.detectChanges();
-    
-    console.log('Buscando concurso:', this.loteria, this.concursoNumero);
 
-    this.http.get(`http://localhost:5084/api/Concursos/buscar?loteria=${this.loteria}&concurso=${this.concursoNumero}`)
+    this.concursoService.buscarConcurso(this.loteria, this.concursoNumero)
       .subscribe({
-        next: (res: any) => {
-          console.log('Dados recebidos:', res);
+        next: (res) => {
           this.resultado = res;
           this.carregando = false;
-          this.cdr.detectChanges(); // Forçar detecção de mudanças
+          this.cdr.detectChanges();
         },
-        error: (err) => {
-          console.error('Erro:', err);
-          this.erro = 'Concurso não encontrado';
+        error: () => {
+          this.erro = 'Concurso não encontrado para essa loteria.';
           this.carregando = false;
-          this.cdr.detectChanges(); // Forçar detecção de mudanças
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
+  buscarUltimo() {
+    this.carregando = true;
+    this.resultado = null;
+    this.erro = null;
+    this.cdr.detectChanges();
+
+    this.concursoService.buscarUltimoConcurso(this.loteria)
+      .subscribe({
+        next: (res: UltimoConcursoResponse) => {
+          this.concursoNumero = res.concurso;
+
+          // Busca os detalhes completos do concurso mais recente,
+          // incluindo as faixas de premiação.
+          this.concursoService.buscarConcurso(this.loteria, res.concurso)
+            .subscribe({
+              next: (concursoCompleto: ConcursoResponse) => {
+                this.resultado = concursoCompleto;
+                this.carregando = false;
+                this.cdr.detectChanges();
+              },
+              error: () => {
+                // Fallback para não deixar a tela vazia caso a busca detalhada falhe.
+                this.resultado = {
+                  concurso: res.concurso,
+                  dataSorteio: res.dataApuracao,
+                  numerosSorteados: res.numerosSorteados,
+                  acumulou: res.acumulou,
+                  valorAcumuladoProximo: res.valorAcumuladoProximo,
+                  valorArrecadado: res.valorArrecadado,
+                  localSorteio: res.localSorteio,
+                  municipioUFSorteio: res.municipioUFSorteio,
+                  premiacoes: []
+                };
+                this.carregando = false;
+                this.cdr.detectChanges();
+              }
+            });
+        },
+        error: () => {
+          this.erro = `Não foi possível buscar o último concurso da ${this.loteriaSelecionada.nomeExibicao}.`;
+          this.carregando = false;
+          this.cdr.detectChanges();
         }
       });
   }

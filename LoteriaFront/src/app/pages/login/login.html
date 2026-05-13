@@ -1,45 +1,66 @@
-<div class="row justify-content-center">
-  <div class="col-md-6 col-lg-4">
-    <div class="card shadow">
-      <div class="card-header bg-primary text-white">
-        <h4 class="mb-0">Login</h4>
-      </div>
-      <div class="card-body">
-        <div *ngIf="erro" class="alert alert-danger alert-dismissible fade show" role="alert">
-          {{ erro }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<section class="row g-4 align-items-stretch justify-content-center">
+  <div class="col-lg-5 d-none d-lg-block">
+    <div class="app-surface login-highlight p-4 h-100">
+      <p class="badge-soft">🎉 Bem-vindo de volta</p>
+      <h2 class="app-section-title mt-3">Sua sorte começa com organização.</h2>
+      <p class="app-section-subtitle">
+        Acompanhe concursos, gere combinações inteligentes e mantenha todo o histórico das suas apostas em um só lugar.
+      </p>
+
+      <ul class="feature-list mt-4 mb-0">
+        <li>🔐 Login seguro com autenticação por token</li>
+        <li>📬 Confirmação de e-mail em dois passos</li>
+        <li>📊 Histórico completo de números gerados</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-8 col-lg-5">
+    <div class="app-surface p-4 p-md-5">
+      <p class="badge-soft">🔑 Acesso</p>
+      <h1 class="app-section-title mt-2 mb-1">Entrar na conta</h1>
+      <p class="app-section-subtitle mb-4">Informe seus dados para continuar.</p>
+
+      <div *ngIf="erro" class="alert alert-danger" role="alert">{{ erro }}</div>
+      <div *ngIf="mensagem" class="alert alert-success">{{ mensagem }}</div>
+
+      <form (ngSubmit)="onSubmit()" class="d-grid gap-3">
+        <div>
+          <label class="form-label">E-mail</label>
+          <input type="email" class="form-control" [(ngModel)]="email" name="email" required placeholder="voce@email.com">
         </div>
-        <div *ngIf="mensagem" class="alert alert-success">{{ mensagem }}</div>
-        <form (ngSubmit)="onSubmit()">
-          <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" [(ngModel)]="email" name="email" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Senha</label>
-            <input type="password" class="form-control" [(ngModel)]="senha" name="senha" required>
-          </div>
-          <button type="submit" class="btn btn-primary w-100" [disabled]="carregando">
-            {{ carregando ? 'Entrando...' : 'Entrar' }}
-          </button>
-        </form>
-        <div *ngIf="pendenteConfirmacao" class="mt-3 border-top pt-3">
-          <p class="small text-muted mb-2">Seu cadastro ainda não foi confirmado. Informe o código enviado por e-mail para liberar o acesso.</p>
-          <div class="mb-3">
-            <label class="form-label">Código de confirmação</label>
-            <input type="text" class="form-control" [(ngModel)]="codigo" name="codigoConfirmacao" maxlength="6">
-          </div>
-          <button type="button" class="btn btn-outline-primary w-100" [disabled]="carregando" (click)="confirmarCadastro()">
+        <div>
+          <label class="form-label">Senha</label>
+          <input type="password" class="form-control" [(ngModel)]="senha" name="senha" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-gradient w-100 py-2" [disabled]="carregando">
+          {{ carregando ? 'Entrando...' : 'Entrar agora' }}
+        </button>
+      </form>
+
+      <div *ngIf="pendenteConfirmacao" class="confirm-box mt-4 pt-4">
+        <h6>📨 Confirmar cadastro</h6>
+        <p class="small text-muted mb-3">Informe o código de 6 dígitos enviado para seu e-mail.</p>
+
+        <div class="mb-3">
+          <label class="form-label">Código de confirmação</label>
+          <input type="text" class="form-control" [(ngModel)]="codigo" name="codigoConfirmacao" maxlength="6" placeholder="123456">
+        </div>
+
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-outline-primary" [disabled]="carregando" (click)="confirmarCadastro()">
             Confirmar cadastro
           </button>
-          <button type="button" class="btn btn-link w-100 mt-2" [disabled]="carregando" (click)="reenviarCodigo()">
+          <button type="button" class="btn btn-link" [disabled]="carregando" (click)="reenviarCodigo()">
             Reenviar código
           </button>
         </div>
-        <div class="mt-3 text-center">
-          <a routerLink="/registro">Não tem conta? Registre-se</a>
-        </div>
+      </div>
+
+      <div class="mt-4 text-center small">
+        Ainda não tem conta?
+        <a routerLink="/registro" class="fw-semibold text-decoration-none">Criar conta grátis</a>
       </div>
     </div>
   </div>
-</div>
+</section>
